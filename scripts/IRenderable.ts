@@ -1,3 +1,4 @@
-export interface IRenderable {
+export interface IRenderable
+{
     Draw(): void;
 }

@@ -1,7 +1,8 @@
 import { Rect } from "./Rect";
 import { Circle } from "./Circle";
 
-export class Game {
+export class Game
+{
     private paddle: Rect;
     private ball: Circle;
     private ctx: CanvasRenderingContext2D;
@@ -22,11 +23,13 @@ export class Game {
     private bricks: any[] = [];
     private score: number = 0;
 
-    public constructor(canvasID: string) {
+    public constructor(canvasID: string)
+    {
 
         // Get canvas element
         let canvas = <HTMLCanvasElement>document.getElementById(canvasID);
-        if (canvas === null) {
+        if (canvas === null)
+        {
             console.log("Failed to get the canvas element with id = " + canvasID);
             return;
         }
@@ -46,7 +49,8 @@ export class Game {
         this.Update();
     }
 
-    private CreateScene(): void {
+    private CreateScene(): void
+    {
         this.paddle = new Rect(this.ctx, 0, 0, 50, 10, "#0095DD");
         this.paddle.position.set(
             this.width / 2 - this.paddle.width / 2,
@@ -64,11 +68,14 @@ export class Game {
         this.leftPressed = false;
     }
 
-    private CreateBricks() {
+    private CreateBricks()
+    {
         this.bricks = [];
-        for (let c = 0; c < this.brickColumnCount; c++) {
+        for (let c = 0; c < this.brickColumnCount; c++)
+        {
             this.bricks[c] = [];
-            for (let r = 0; r < this.brickRowCount; r++) {
+            for (let r = 0; r < this.brickRowCount; r++)
+            {
                 let x = (c * (this.brickWidth + this.brickPadding)) + this.brickOffsetLeft;
                 let y = (r * (this.brickHeight + this.brickPadding)) + this.brickOffsetTop;
                 //this.bricks[c][r] = { x: 0, y: 0 };
@@ -77,7 +84,8 @@ export class Game {
         }
     }
 
-    private Update(): void {
+    private Update(): void
+    {
         requestAnimationFrame(() => this.Update());
         this.KeyboardHandler();
         this.CheckCollisions();
@@ -86,14 +94,18 @@ export class Game {
         this.Draw();
     }
 
-    private Draw(): void {
+    private Draw(): void
+    {
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.paddle.Draw();
         this.ball.Draw();
 
-        for (let c = 0; c < this.brickColumnCount; c++) {
-            for (let r = 0; r < this.brickRowCount; r++) {
-                if (!this.bricks[c][r].visible) {
+        for (let c = 0; c < this.brickColumnCount; c++)
+        {
+            for (let r = 0; r < this.brickRowCount; r++)
+            {
+                if (!this.bricks[c][r].visible)
+                {
                     continue;
                 }
                 this.bricks[c][r].Draw();
@@ -103,63 +115,81 @@ export class Game {
         this.DrawScore();
     }
 
-    private KeyboardHandler() {
-        if (this.rightPressed && this.paddle.position.x < this.width - this.paddle.width) {
+    private KeyboardHandler()
+    {
+        if (this.rightPressed && this.paddle.position.x < this.width - this.paddle.width)
+        {
             this.paddle.position.x += this.paddleSpeed;
         }
-        else if (this.leftPressed && this.paddle.position.x > 0) {
+        else if (this.leftPressed && this.paddle.position.x > 0)
+        {
             this.paddle.position.x -= this.paddleSpeed;
         }
     }
 
-    private KeyDownHandler(e: KeyboardEvent) {
-        if (e.keyCode == 39 || e.keyCode == 68) {
+    private KeyDownHandler(e: KeyboardEvent)
+    {
+        if (e.keyCode == 39 || e.keyCode == 68)
+        {
             this.rightPressed = true;
         }
-        else if (e.keyCode == 37 || e.keyCode == 65) {
+        else if (e.keyCode == 37 || e.keyCode == 65)
+        {
             this.leftPressed = true;
         }
     }
 
-    private KeyUpHandler(e: KeyboardEvent) {
-        if (e.keyCode == 39 || e.keyCode == 68) {
+    private KeyUpHandler(e: KeyboardEvent)
+    {
+        if (e.keyCode == 39 || e.keyCode == 68)
+        {
             this.rightPressed = false;
         }
-        else if (e.keyCode == 37 || e.keyCode == 65) {
+        else if (e.keyCode == 37 || e.keyCode == 65)
+        {
             this.leftPressed = false;
         }
     }
 
-    private MouseMoveHandler(e: MouseEvent) {
+    private MouseMoveHandler(e: MouseEvent)
+    {
         let relativeX = e.clientX - this.ctx.canvas.offsetLeft;
-        if (relativeX > 0 && relativeX < this.width) {
+        if (relativeX > 0 && relativeX < this.width)
+        {
             this.paddle.position.x = relativeX - this.paddle.width / 2;
         }
     }
 
-    private DrawScore() {
+    private DrawScore()
+    {
         this.ctx.font = "16px Arial";
         this.ctx.fillStyle = "#0095DD";
         this.ctx.fillText("Score: " + this.score, 8, 20);
     }
 
-    private CheckCollisions(): void {
+    private CheckCollisions(): void
+    {
         if (this.ball.position.x + this.dx < this.ball.radius ||
             this.ball.position.x + this.dx > this.width - this.ball.radius
-        ) {
+        )
+        {
             this.dx = -this.dx;
         }
 
-        if (this.ball.position.y + this.dy < this.ball.radius) {
+        if (this.ball.position.y + this.dy < this.ball.radius)
+        {
             this.dy = -this.dy;
         }
-        else if (this.ball.position.y + this.dy > this.paddle.position.y - this.ball.radius) {
+        else if (this.ball.position.y + this.dy > this.paddle.position.y - this.ball.radius)
+        {
             if (this.paddle.position.x < this.ball.position.x &&
                 this.ball.position.x < this.paddle.position.x + this.paddle.width
-            ) {
+            )
+            {
                 this.dy = -this.dy;
             }
-            else {
+            else
+            {
                 alert("GAME OVER");
                 this.CreateScene();
             }
@@ -167,19 +197,24 @@ export class Game {
 
         let x = this.ball.position.x;
         let y = this.ball.position.y;
-        for (let c = 0; c < this.brickColumnCount; c++) {
-            for (let r = 0; r < this.brickRowCount; r++) {
+        for (let c = 0; c < this.brickColumnCount; c++)
+        {
+            for (let r = 0; r < this.brickRowCount; r++)
+            {
                 let b = <Rect>this.bricks[c][r];
-                if (!b.visible) {
+                if (!b.visible)
+                {
                     continue;
                 }
                 if (b.position.x < x && x < b.position.x + this.brickWidth &&
                     b.position.y < y && y < b.position.y + this.brickHeight
-                ) {
+                )
+                {
                     this.dy = -this.dy;
                     b.visible = false;
                     this.score++;
-                    if (this.score == this.brickRowCount * this.brickColumnCount) {
+                    if (this.score == this.brickRowCount * this.brickColumnCount)
+                    {
                         alert("YOU WIN, CONGRATULATIONS!");
                         this.CreateScene();
                         this.CreateBricks();
