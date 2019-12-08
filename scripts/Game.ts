@@ -215,7 +215,7 @@ export class Game
                     this.score++;
                     if (this.score == this.brickRowCount * this.brickColumnCount)
                     {
-                        alert("YOU WIN, CONGRATULATIONS!");
+                        alert("YOU WON, CONGRATULATIONS!");
                         this.CreateScene();
                         this.CreateBricks();
                     }
